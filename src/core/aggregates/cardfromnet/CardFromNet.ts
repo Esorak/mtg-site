@@ -1,15 +1,15 @@
-import type { CardDTO } from "./CardDTO";
+import type { CardNetDTO } from "../card/CardDTO";
 
-export default class Card {
+export default class CardFromNet {
   private id: string;
   private name: string;
-  private subtype: string;
+  private subtype: string | undefined;
   private type: string;
   private cost: number;
   private power: number | undefined;
   private defense: number | undefined;
   private art: string;
-  private description: string | undefined;
+  private description: string;
   private rarity: string;
   private setsName: string;
   private collectorNumber: string;
@@ -17,33 +17,31 @@ export default class Card {
   private artist: string;
   private color: string[];
   private manaCost: string;
-  private loyalty?: number | null | undefined;
-  private keywords: string[] | undefined;
+  private loyalty?: number | undefined | null;
+  private keywords: string[];
   private expansion: string;
 
-  public constructor(cardDTO: CardDTO) {
-    this.id = cardDTO.id;
-    this.name = cardDTO.name;
-    this.subtype = cardDTO.subtype;
-    this.type = cardDTO.type;
-    this.cost = cardDTO.cost;
-    this.power = cardDTO.power;
-    this.defense = cardDTO.defense;
-    this.art = cardDTO.art;
-    this.description = cardDTO.description;
-    this.rarity = cardDTO.rarity;
-    this.setsName = cardDTO.setsName;
-    this.collectorNumber = cardDTO.collectorNumber;
-    this.flavorText = cardDTO.flavorText;
-    this.artist = cardDTO.artist;
-    this.color = cardDTO.color;
-    this.manaCost = cardDTO.manaCost;
-    this.keywords = cardDTO.keywords;
-    this.expansion = cardDTO.expansion;
-    this.loyalty = cardDTO.loyalty;
+  constructor(cardNetDTO: CardNetDTO) {
+    this.id = cardNetDTO.id;
+    this.name = cardNetDTO.name;
+    this.subtype = cardNetDTO.type_line;
+    this.type = cardNetDTO.type_line;
+    this.cost = cardNetDTO.cmc;
+    this.power = cardNetDTO.power ? parseInt(cardNetDTO.power) : undefined;
+    this.defense = cardNetDTO.toughness ? parseInt(cardNetDTO.toughness) : undefined;
+    this.art = cardNetDTO.image_uris ? cardNetDTO.image_uris.normal : "";
+    this.description = cardNetDTO.oracle_text;
+    this.rarity = cardNetDTO.rarity;
+    this.setsName = cardNetDTO.sets_name;
+    this.collectorNumber = cardNetDTO.collector_number;
+    this.flavorText = cardNetDTO.flavor_text;
+    this.artist = cardNetDTO.artist;
+    this.color = cardNetDTO.colors;
+    this.manaCost = cardNetDTO.mana_cost;
+    this.keywords = cardNetDTO.keywords || [];
+    this.expansion = cardNetDTO.set;
+    this.loyalty = cardNetDTO.loyalty ? parseInt(cardNetDTO.loyalty) : undefined;
   }
-
-  // Getter and setter methods for all attributes
 
   public getId(): string {
     return this.id;
@@ -61,7 +59,7 @@ export default class Card {
     this.name = name;
   }
 
-  public getSubtype(): string {
+  public getSubtype(): string | undefined {
     return this.subtype;
   }
 
@@ -109,11 +107,11 @@ export default class Card {
     this.art = art;
   }
 
-  public getDescription(): string | undefined {
+  public getDescription(): string {
     return this.description;
   }
 
-  public setDescription(description: string | undefined): void {
+  public setDescription(description: string): void {
     this.description = description;
   }
 
@@ -173,19 +171,19 @@ export default class Card {
     this.manaCost = manaCost;
   }
 
-  public getLoyalty(): number | null | undefined {
+  public getLoyalty(): number | undefined | null {
     return this.loyalty;
   }
 
-  public setLoyalty(loyalty: number | null | undefined): void {
+  public setLoyalty(loyalty: number | undefined | null): void {
     this.loyalty = loyalty;
   }
 
-  public getKeywords(): string[] | undefined {
+  public getKeywords(): string[] {
     return this.keywords;
   }
 
-  public setKeywords(keywords: string[] | undefined): void {
+  public setKeywords(keywords: string[]): void {
     this.keywords = keywords;
   }
 

@@ -1,11 +1,16 @@
-// pages/index.tsx
+"use client";
 
-import styles from "./page.module.scss";
+import { useCard } from "@/app/context/Contextt";
+import type CardFromNet from "@/core/aggregates/cardfromnet/CardFromNet";
+import { useEffect, useState } from "react";
 
-export default function Home() {
-  return (
-    <main>
-      <div className={styles.pageContainer}></div>
-    </main>
-  );
+export function DeckPage() {
+  const { cards } = useCard();
+  const [deck, setDeck] = useState<CardFromNet[]>([]);
+
+  useEffect(() => {
+    setDeck(cards);
+  }, [cards]);
+
+  return <main></main>;
 }

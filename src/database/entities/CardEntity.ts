@@ -2,14 +2,14 @@ import { Column, Entity, PrimaryColumn } from "typeorm";
 
 @Entity({ name: "cards" })
 export class CardEntity {
-  @PrimaryColumn({ type: "uuid" })
+  @PrimaryColumn({ type: "varchar" })
   id!: string;
 
   @Column({ type: "varchar", nullable: false })
   name!: string;
 
   @Column({ type: "text", nullable: true })
-  description?: string;
+  description!: string;
 
   @Column({ type: "varchar", nullable: false, array: true })
   color!: string[];
@@ -17,7 +17,7 @@ export class CardEntity {
   @Column({ type: "varchar", nullable: false })
   type!: string;
 
-  @Column({ type: "varchar", nullable: false })
+  @Column({ type: "varchar", nullable: true })
   subtype!: string;
 
   @Column({ type: "int", nullable: false })
@@ -32,14 +32,14 @@ export class CardEntity {
   @Column({ type: "varchar", nullable: false })
   rarity!: string;
 
-  @Column({ type: "varchar", nullable: false })
+  @Column({ type: "varchar", nullable: true })
   setsName!: string;
 
   @Column({ type: "varchar", nullable: false })
   collectorNumber!: string;
 
-  @Column({ type: "varchar", nullable: false })
-  flavorText!: string;
+  @Column({ type: "varchar", nullable: true })
+  flavorText?: string;
 
   @Column({ type: "varchar", nullable: false })
   artist!: string;
@@ -48,15 +48,15 @@ export class CardEntity {
   manaCost!: string;
 
   @Column({ type: "int", nullable: true })
-  loyalty?: number;
+  loyalty?: number | null | undefined;
 
-  @Column({ type: "varchar", nullable: false, array: true })
-  keywords!: string[];
+  @Column({ type: "varchar", nullable: true, array: true })
+  keywords?: string[];
 
   @Column({ type: "varchar", nullable: false })
   expansion!: string;
 
-  @Column({ type: "number", nullable: true })
+  @Column({ type: "int", nullable: true })
   power?: number;
 
   constructor(card?: Partial<CardEntity>) {

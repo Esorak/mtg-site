@@ -1,42 +1,19 @@
 "use client";
 
-import { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import type { CardDTO } from "@/core/aggregates/card/CardDTO"; // Assurez-vous d'importer CardDTO correctement
+import CardFromNet from "@/core/aggregates/cardfromnet/CardFromNet";
+import { ReactNode, createContext, useContext, useState } from "react";
 
-// Definition of Card interface
-interface CardInt {
-  id: string;
-  name: string;
-  subtype: string;
-  type: string;
-  cost: number;
-  power: number;
-  defense: number;
-  art: string;
-  description: string;
-  rarity: string;
-  setName: string;
-  collectorNumber: string;
-  flavorText: string;
-  artist: string;
-  color: string[];
-  manaCost: string;
-  loyalty?: number; // Optional, for planeswalkers
-  keywords: string[];
-  expansion: string;
-  legality: string[];
-  multiverseId: number;
+interface CardContextType {
+  cards: CardFromNet[];
+  addCard: (card: CardDTO) => void;
+  removeCard: (id: string) => void;
+  searchCard: (name: string) => void;
+  fetchAllCards: () => void;
 }
-// Creation of context
+
 const CardContext = createContext<CardContextType | undefined>(undefined);
 
-// Type for context value
-interface CardContextType {
-  cards: CardInt[];
-  addCard: (card: CardInt) => void;
-  removeCard: (id: string) => void;
-}
-
-// Custom hook to use Card context
 export const useCard = () => {
   const context = useContext(CardContext);
   if (!context) {
@@ -45,38 +22,54 @@ export const useCard = () => {
   return context;
 };
 
-// Provider component
 export function CardProvider({ children }: { children: ReactNode }) {
-  const [cards, setCards] = useState<CardInt[]>([]);
+  const [cards, setCards] = useState<CardFromNet[]>([]);
 
-  useEffect(() => {
-    const fetchCards = async () => {
-      const entered = "olivia voldaren";
-      try {
-        let response = await fetch(`https://api.scryfall.com/cards/named?fuzzy=${entered}&lang=fr`);
-
-        if (!response.ok) {
-          console.log("Fetching in French failed, trying in English...");
-          response = await fetch(`https://api.scryfall.com/cards/named?fuzzy=${entered}&lang=en`);
-        }
-        if (response.ok) {
-          const data = await response.json();
-          setCards(data);
-          console.log(data);
-        } else {
-          console.error("Failed to fetch cards in both French and English");
-        }
-      } catch (error) {
-        console.error("Error fetching cards:", error);
-      }
-    };
-
-    fetchCards();
-  }, []);
-
-  const addCard = async (card: CardInt) => {
+  const fetchAllCards = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/cards", {
+      console.log("Fetching cards...");
+      const response = await fetch("/api/magic", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setCards(data);
+      } else {
+        console.error("Failed to fetch cards from backend");
+      }
+    } catch (error) {
+      console.error("Error fetching cards:", error);
+    }
+  };
+
+  const searchCard = async (name: string) => {
+    try {
+      let response = await fetch(`https://api.scryfall.com/cards/search?q=${name}&lang=fr`);
+
+      if (!response.ok) {
+        console.log("Fetching in French failed, trying in English...");
+        response = await fetch(`https://api.scryfall.com/cards/search?q=${name}&lang=en`);
+      }
+      if (response.ok) {
+        const data = await response.json();
+        const cardInstances = data.data.map((cardDTO: any) => new CardFromNet(cardDTO));
+        setCards(cardInstances);
+        console.log(cardInstances);
+      } else {
+        console.error("Failed to fetch cards in both French and English");
+      }
+    } catch (error) {
+      console.error("Error fetching cards:", error);
+    }
+  };
+
+  const addCard = async (card: CardDTO) => {
+    try {
+      const response = await fetch("/api/magic", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -93,15 +86,18 @@ export function CardProvider({ children }: { children: ReactNode }) {
       console.error("Error:", error);
     }
   };
-
   const removeCard = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/cards`, {
+      const response = await fetch(`/api/magic`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ id }),
       });
       if (response.ok) {
         setCards((prevCards) => prevCards.filter((card) => card.id !== id));
+        console.log("Card deleted");
       } else {
         console.error("Failed to delete card");
       }
@@ -110,5 +106,7 @@ export function CardProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  return <CardContext.Provider value={{ cards, addCard, removeCard }}>{children}</CardContext.Provider>;
+  return (
+    <CardContext.Provider value={{ cards, addCard, removeCard, searchCard, fetchAllCards }}>{children}</CardContext.Provider>
+  );
 }

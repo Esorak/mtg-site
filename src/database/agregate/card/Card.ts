@@ -1,3 +1,5 @@
+import type { CardDTO } from "@/core/aggregates/card/CardDTO";
+
 export default class Card {
   private id: string;
   private name: string;
@@ -15,7 +17,7 @@ export default class Card {
   private artist: string;
   private color: string[];
   private manaCost: string;
-  private loyalty?: number;
+  private loyalty?: number | null | undefined;
   private keywords: string[];
   private expansion: string;
 
@@ -30,7 +32,7 @@ export default class Card {
     this.art = cardDTO.art;
     this.description = cardDTO.description;
     this.rarity = cardDTO.rarity;
-    this.setsName = cardDTO.setName;
+    this.setsName = cardDTO.setsName;
     this.collectorNumber = cardDTO.collectorNumber;
     this.flavorText = cardDTO.flavorText;
     this.artist = cardDTO.artist;
@@ -127,8 +129,8 @@ export default class Card {
     return this.setsName;
   }
 
-  public setSetsName(setName: string): void {
-    this.setsName = setName;
+  public setSetsName(setsName: string): void {
+    this.setsName = setsName;
   }
 
   public getCollectorNumber(): string {
@@ -171,11 +173,11 @@ export default class Card {
     this.manaCost = manaCost;
   }
 
-  public getLoyalty(): number | undefined {
+  public getLoyalty(): number | null | undefined {
     return this.loyalty;
   }
 
-  public setLoyalty(loyalty: number | undefined): void {
+  public setLoyalty(loyalty: number | null | undefined): void {
     this.loyalty = loyalty;
   }
 

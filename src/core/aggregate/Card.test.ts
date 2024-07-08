@@ -1,4 +1,3 @@
-// // Assurez-vous que le chemin d'importation est correct
 // import type Card from "../Card";
 
 // describe("Card", () => {

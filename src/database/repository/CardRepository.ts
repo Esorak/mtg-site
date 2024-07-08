@@ -1,4 +1,5 @@
 import Card from "@/core/aggregates/card/Card";
+import { toCard } from "@/core/converter/ToCard";
 import { Repository } from "typeorm";
 import Connection from "../Connection";
 import { CardEntity } from "../entities/CardEntity";
@@ -8,55 +9,42 @@ export default class CardRepository {
 
   constructor(connection: Connection) {
     const dbConnection = connection.getConnection();
-    const repository = dbConnection.getRepository(CardEntity);
-    this.repository = repository;
+    this.repository = dbConnection.getRepository(CardEntity);
   }
 
-  private mapEntityToCard(cardEntity: CardEntity): Card {
-    return new Card({
-      id: cardEntity.id,
-      name: cardEntity.name,
-      subtype: cardEntity.subtype,
-      type: cardEntity.type,
-      cost: cardEntity.cost,
-      power: cardEntity.power ?? undefined,
-      defense: cardEntity.defense ?? undefined,
-      art: cardEntity.art,
-      description: cardEntity.description ?? "",
-      rarity: cardEntity.rarity,
-      setName: cardEntity.setsName,
-      collectorNumber: cardEntity.collectorNumber,
-      flavorText: cardEntity.flavorText,
-      artist: cardEntity.artist,
-      color: cardEntity.color,
-      manaCost: cardEntity.manaCost,
-      keywords: cardEntity.keywords,
-      expansion: cardEntity.expansion,
-      loyalty: cardEntity.loyalty,
-    });
-  }
-  //  /**
-  //  * Sauvegarde d'une carte dans la base de données.
-  //  * @param card : Objet représentant une carte à sauvegarder.
-  //  */
-  //  async saveCard(card: Card): Promise<void> {
-  //   const cardEntity = this.repository.create(card);
-  //   await this.repository.save(cardEntity);
-  // }
+  async saveCard(card: Card): Promise<void> {
+    const cardEntity = new CardEntity();
+    cardEntity.id = card.getId();
+    cardEntity.name = card.getName();
 
-  /**
-   * Récupère toutes les cartes depuis la base de données.
-   * @returns Une promesse résolue avec un tableau de cartes.
-   */
-  async findAll(): Promise<Card[]> {
-    const result = await this.repository.find();
-    return result.map((cardEntity) => this.mapEntityToCard(cardEntity));
+    // Décomposer la chaîne "type — subtype"
+    const [type, subtype] = card.getType().split(" — ");
+
+    cardEntity.type = type;
+    cardEntity.subtype = subtype;
+    cardEntity.cost = card.getCost();
+    cardEntity.power = card.getPower();
+    cardEntity.defense = card.getDefense();
+    cardEntity.art = card.getArt();
+    cardEntity.color = card.getColor();
+    cardEntity.rarity = card.getRarity();
+    cardEntity.setsName = card.getSetsName();
+    cardEntity.collectorNumber = card.getCollectorNumber();
+    cardEntity.flavorText = card.getFlavorText();
+    cardEntity.artist = card.getArtist();
+    cardEntity.manaCost = card.getManaCost();
+    cardEntity.loyalty = card.getLoyalty();
+    cardEntity.keywords = card.getKeywords();
+    cardEntity.expansion = card.getExpansion();
+    await this.repository.save(cardEntity);
   }
-  // /**
-  //  * Supprime une carte de la base de données.
-  //  * @param id : Identifiant unique de la carte à supprimer.
-  //  */
-  // async deleteCard(id: string): Promise<void> {
-  //   await this.repository.delete(id);
-  // }
+
+  async getAllCards(): Promise<Card[]> {
+    const cardEntities = await this.repository.find();
+    return cardEntities.map((cardEntity) => toCard(cardEntity));
+  }
+
+  async deleteCard(id: string): Promise<void> {
+    await this.repository.delete(id);
+  }
 }
