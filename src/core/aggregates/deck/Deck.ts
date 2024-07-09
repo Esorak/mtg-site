@@ -1,8 +1,11 @@
 import Card from "../card/Card";
 
 export default class deck {
+  ToCard(arg0: any): import("../../../database/entities/CardEntity").CardEntity[] {
+    throw new Error("Method not implemented.");
+  }
   private id: string;
-  private name: string;
+  private name: string | undefined;
   private cards: Card[];
 
   public constructor(id: string, name: string, cards: Card[] = []) {
@@ -19,7 +22,7 @@ export default class deck {
     this.id = id;
   }
 
-  public getName(): string {
+  public getName(): string | undefined {
     return this.name;
   }
 

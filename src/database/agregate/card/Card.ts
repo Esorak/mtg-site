@@ -113,7 +113,7 @@ export default class Card {
     return this.description;
   }
 
-  public setDescription(description: string): void {
+  public setDescription(description: string | undefined): void {
     this.description = description;
   }
 

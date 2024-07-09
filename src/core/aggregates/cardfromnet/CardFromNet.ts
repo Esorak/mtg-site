@@ -9,7 +9,7 @@ export default class CardFromNet {
   private power: number | undefined;
   private defense: number | undefined;
   private art: string;
-  private description: string;
+  private description: string | undefined;
   private rarity: string;
   private setsName: string;
   private collectorNumber: string;
@@ -107,11 +107,11 @@ export default class CardFromNet {
     this.art = art;
   }
 
-  public getDescription(): string {
+  public getDescription(): string | undefined {
     return this.description;
   }
 
-  public setDescription(description: string): void {
+  public setDescription(description: string | undefined): void {
     this.description = description;
   }
 

@@ -36,6 +36,7 @@ export default class CardRepository {
     cardEntity.loyalty = card.getLoyalty();
     cardEntity.keywords = card.getKeywords();
     cardEntity.expansion = card.getExpansion();
+
     await this.repository.save(cardEntity);
   }
 

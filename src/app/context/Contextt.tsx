@@ -11,6 +11,7 @@ interface CardContextType {
   removeCard: (id: string) => void;
   searchCard: (name: string) => void;
   fetchAllCards: () => void;
+  addCardToDeck: (id: string) => void;
 }
 
 const CardContext = createContext<CardContextType | undefined>(undefined);
@@ -91,6 +92,10 @@ export function CardProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  /**
+   *
+   * @param id
+   */
   const removeCard = async (id: string) => {
     try {
       const response = await fetch(`/api/magic`, {
@@ -111,7 +116,33 @@ export function CardProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  /*
+  
+  
+  */
+
+  const addCardToDeck = async (id: string) => {
+    try {
+      const response = await fetch(`/api/deck`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }),
+      });
+      if (response.ok) {
+        console.log("Card added to deck");
+      } else {
+        console.error("Failed to add card to deck");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
-    <CardContext.Provider value={{ cards, addCard, removeCard, searchCard, fetchAllCards }}>{children}</CardContext.Provider>
+    <CardContext.Provider value={{ cards, addCard, removeCard, searchCard, fetchAllCards, addCardToDeck }}>
+      {children}
+    </CardContext.Provider>
   );
 }

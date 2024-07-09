@@ -16,6 +16,7 @@ function CardList() {
   const { fetchAllCards, cards } = useCard();
   const [loading, setLoading] = useState(true);
   const { removeCard } = useCard();
+  const { addCardToDeck } = useCard();
 
   const fetchCards = async () => {
     setLoading(true);
@@ -43,13 +44,23 @@ function CardList() {
     }
   };
 
+  const handleAddtoDeck = async (card) => {
+    console.log("Adding card with ID:", id, "to deck");
+    await addCardToDeck(id);
+  };
+
   return (
     <main>
       <div className={styles.pageContainer}>
         <div className={styles.resultsContainer}>
           {cards.length > 0 ? (
             cards.map((card: CardFromNet) => (
-              <div key={card.getId()} className={styles.card} onClick={() => handleRemoveCard(card.getId())}>
+              <div
+                key={card.getId()}
+                className={styles.card}
+                onDoubleClick={() => handleRemoveCard(card.getId())}
+                onClick={() => handleAddtoDeck(card)}
+              >
                 <h2>{card.getName()}</h2>
                 {card.getArt() ? <img src={card.getArt()} alt={card.getId()} /> : <p>No image available</p>}
               </div>

@@ -43,6 +43,7 @@ export async function DELETE(req: Request): Promise<Response> {
     return new Response(JSON.stringify({ error: "failed to delete card" }), { status: 500 });
   }
 }
+
 // POST a new card
 const postSchema = z.object({
   id: z.string().min(1, "Id cannot be empty"),
