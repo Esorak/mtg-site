@@ -8,7 +8,7 @@ import "./globals.scss";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "search a card",
+  title: "Magic The Gisa",
   description: "search a card",
 };
 

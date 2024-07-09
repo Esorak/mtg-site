@@ -1,6 +1,7 @@
 "use client";
 
-import type { CardDTO } from "@/core/aggregates/card/CardDTO"; // Assurez-vous d'importer CardDTO correctement
+import Card from "@/core/aggregates/card/Card";
+import type { CardDTO } from "@/core/aggregates/card/CardDTO";
 import CardFromNet from "@/core/aggregates/cardfromnet/CardFromNet";
 import { ReactNode, createContext, useContext, useState } from "react";
 
@@ -37,7 +38,9 @@ export function CardProvider({ children }: { children: ReactNode }) {
 
       if (response.ok) {
         const data = await response.json();
-        setCards(data);
+        const cardInstances = data.map((cardDTO: any) => new Card(cardDTO));
+        setCards(cardInstances);
+        console.log(cardInstances);
       } else {
         console.error("Failed to fetch cards from backend");
       }
@@ -78,7 +81,8 @@ export function CardProvider({ children }: { children: ReactNode }) {
       });
       if (response.ok) {
         const newCard = await response.json();
-        setCards((prevCards) => [...prevCards, newCard]);
+        const cardInstance = new CardFromNet(newCard);
+        setCards((prevCards) => [...prevCards, cardInstance]);
       } else {
         console.error("Failed to add card");
       }
@@ -86,6 +90,7 @@ export function CardProvider({ children }: { children: ReactNode }) {
       console.error("Error:", error);
     }
   };
+
   const removeCard = async (id: string) => {
     try {
       const response = await fetch(`/api/magic`, {
@@ -96,7 +101,7 @@ export function CardProvider({ children }: { children: ReactNode }) {
         body: JSON.stringify({ id }),
       });
       if (response.ok) {
-        setCards((prevCards) => prevCards.filter((card) => card.id !== id));
+        setCards((prevCards) => prevCards.filter((card) => card.getId() !== id));
         console.log("Card deleted");
       } else {
         console.error("Failed to delete card");

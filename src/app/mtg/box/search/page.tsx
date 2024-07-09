@@ -2,6 +2,8 @@
 
 import { CardProvider, useCard } from "@/app/context/Contextt";
 import type { CardDTO } from "@/core/aggregates/card/CardDTO";
+import CardFromNet from "@/core/aggregates/cardfromnet/CardFromNet";
+import CardDTOFromNet from "@/core/converter/CardDTOFromNet";
 import { useEffect, useState } from "react";
 import styles from "./page.module.scss";
 
@@ -45,10 +47,10 @@ function SearchPage() {
         </button>
       </div>
       <div className={styles.resultsContainer}>
-        {cards.map((card: CardDTO) => (
-          <div key={card.id} className={styles.card} onClick={() => handleCardClick(card)}>
-            {card.art ? <img src={card.art} alt={card.id} /> : <p>No image available</p>}
-            <h3>{card.name}</h3>
+        {cards.map((card: CardFromNet) => (
+          <div key={card.getId()} className={styles.card} onClick={() => handleCardClick(CardDTOFromNet(card))}>
+            {card.getArt() ? <img src={card.getArt()} alt={card.getId()} /> : <p>No image available</p>}
+            <h3>{card.getName()}</h3>
           </div>
         ))}
       </div>

@@ -9,16 +9,16 @@ export default class Card {
   private power: number | undefined;
   private defense: number | undefined;
   private art: string;
-  private description: string;
+  private description: string | undefined;
   private rarity: string;
   private setsName: string;
   private collectorNumber: string;
-  private flavorText: string;
+  private flavorText: string | undefined;
   private artist: string;
   private color: string[];
   private manaCost: string;
   private loyalty?: number | null | undefined;
-  private keywords: string[];
+  private keywords: string[] | undefined;
   private expansion: string;
 
   public constructor(cardDTO: CardDTO) {
@@ -109,7 +109,7 @@ export default class Card {
     this.art = art;
   }
 
-  public getDescription(): string {
+  public getDescription(): string | undefined {
     return this.description;
   }
 
@@ -141,7 +141,7 @@ export default class Card {
     this.collectorNumber = collectorNumber;
   }
 
-  public getFlavorText(): string {
+  public getFlavorText(): string | undefined {
     return this.flavorText;
   }
 
@@ -181,7 +181,7 @@ export default class Card {
     this.loyalty = loyalty;
   }
 
-  public getKeywords(): string[] {
+  public getKeywords(): string[] | undefined {
     return this.keywords;
   }
 

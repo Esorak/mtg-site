@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "search a card",
+  title: "Magic the Gisa",
   description: "search your cards",
 };
 

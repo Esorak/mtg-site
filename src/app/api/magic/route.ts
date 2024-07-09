@@ -10,6 +10,7 @@ export async function GET(): Promise<Response> {
   const repo = new CardRepository(connection);
 
   const cards = await repo.getAllCards();
+  console.log("Retrieved cards:", cards); // Log des cartes récupérées
   return new Response(JSON.stringify(cards));
 }
 

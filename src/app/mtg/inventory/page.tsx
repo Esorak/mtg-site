@@ -1,6 +1,6 @@
 "use client";
 import { CardProvider, useCard } from "@/app/context/Contextt";
-import type { CardDTO } from "@/core/aggregates/card/CardDTO";
+import type CardFromNet from "@/core/aggregates/cardfromnet/CardFromNet";
 import { useEffect, useState } from "react";
 import styles from "./page.module.scss";
 
@@ -48,10 +48,10 @@ function CardList() {
       <div className={styles.pageContainer}>
         <div className={styles.resultsContainer}>
           {cards.length > 0 ? (
-            cards.map((card: CardDTO) => (
-              <div key={card.id} className={styles.card} onClick={() => handleRemoveCard(card.id)}>
-                <h2>{card.name}</h2>
-                {card.art ? <img src={card.art} alt={card.id} /> : <p>No image available</p>}
+            cards.map((card: CardFromNet) => (
+              <div key={card.getId()} className={styles.card} onClick={() => handleRemoveCard(card.getId())}>
+                <h2>{card.getName()}</h2>
+                {card.getArt() ? <img src={card.getArt()} alt={card.getId()} /> : <p>No image available</p>}
               </div>
             ))
           ) : (
