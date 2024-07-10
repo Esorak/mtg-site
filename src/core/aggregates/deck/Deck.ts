@@ -1,9 +1,6 @@
 import Card from "../card/Card";
 
 export default class deck {
-  ToCard(arg0: any): import("../../../database/entities/CardEntity").CardEntity[] {
-    throw new Error("Method not implemented.");
-  }
   private id: string;
   private name: string | undefined;
   private cards: Card[];
@@ -40,10 +37,6 @@ export default class deck {
 
   public addCard(card: Card): void {
     this.cards.push(card);
-  }
-
-  public removeCard(cardId: string): void {
-    this.cards = this.cards.filter((card) => card.getId() !== cardId);
   }
 
   public getDeckSize(): number {

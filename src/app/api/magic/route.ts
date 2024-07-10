@@ -10,7 +10,6 @@ export async function GET(): Promise<Response> {
   const repo = new CardRepository(connection);
 
   const cards = await repo.getAllCards();
-  console.log("Retrieved cards:", cards);
   return new Response(JSON.stringify(cards));
 }
 
@@ -70,7 +69,6 @@ export async function POST(req: Request): Promise<Response> {
   let data;
   try {
     data = await req.json();
-    console.log("Received data:", data); // Log des données reçues
     postSchema.parse(data); // Validation des données
   } catch (e) {
     console.error("Invalid data:", e); // Log de l'erreur
@@ -78,13 +76,11 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   const newCard: Card = new Card(data);
-  console.log("Parsed new card:", newCard); // Log de la carte analysée
 
   const connection = await Connection.getInstance();
   const repo = new CardRepository(connection);
   try {
     await repo.saveCard(newCard);
-    console.log("Card saved to database:", newCard); // Log de la carte enregistrée
     return new Response(JSON.stringify(newCard));
   } catch (e) {
     console.error("Error saving card to database:", e); // Log de l'erreur d'enregistrement

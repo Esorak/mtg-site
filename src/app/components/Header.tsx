@@ -2,7 +2,6 @@ import Button from "./Button";
 import styles from "./Header.module.scss";
 
 export default function Header() {
-  console.log("ici");
   return (
     <header className={styles.header}>
       <Button name="Found Cards" href="/mtg/box/search"></Button>

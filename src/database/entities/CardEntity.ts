@@ -1,5 +1,4 @@
-import { Column, Entity, ManyToMany, PrimaryColumn } from "typeorm";
-import DeckEntity from "./DeckEntity";
+import { Column, Entity, PrimaryColumn } from "typeorm";
 
 @Entity({ name: "cards" })
 export class CardEntity {
@@ -59,9 +58,6 @@ export class CardEntity {
 
   @Column({ type: "int", nullable: true })
   power?: number;
-
-  @ManyToMany(() => DeckEntity, (deck) => deck.cards)
-  decks?: DeckEntity[];
 
   constructor(card?: Partial<CardEntity>) {
     if (card) {

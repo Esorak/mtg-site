@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn } from "typeorm";
 import { CardEntity } from "./CardEntity";
 
 @Entity({ name: "decks" })
@@ -8,7 +8,9 @@ export default class DeckEntity {
   id!: string;
   @Column({ type: "varchar", nullable: true })
   name!: string | undefined;
-  @ManyToMany(() => CardEntity, (card) => card.decks)
+
+  @ManyToMany(() => CardEntity)
+  @JoinTable()
   cards!: CardEntity[];
 
   constructor(deck?: Partial<CardEntity>) {

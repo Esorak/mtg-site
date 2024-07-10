@@ -1,6 +1,8 @@
 "use client";
 import { CardProvider, useCard } from "@/app/context/Contextt";
+import type { CardDTO } from "@/core/aggregates/card/CardDTO";
 import type CardFromNet from "@/core/aggregates/cardfromnet/CardFromNet";
+import toCardDTO from "@/core/converter/CardDTOFromNet";
 import { useEffect, useState } from "react";
 import styles from "./page.module.scss";
 
@@ -36,7 +38,6 @@ function CardList() {
   }
 
   const handleRemoveCard = async (id: string) => {
-    console.log("Deleting card with ID:", id);
     try {
       await removeCard(id);
     } catch (error) {
@@ -44,9 +45,9 @@ function CardList() {
     }
   };
 
-  const handleAddtoDeck = async (card) => {
-    console.log("Adding card with ID:", id, "to deck");
-    await addCardToDeck(id);
+  const handleAddtoDeck = async (card: CardDTO) => {
+    console.log("Adding card with ID:", card.id, "to deck");
+    await addCardToDeck(card);
   };
 
   return (
@@ -59,7 +60,7 @@ function CardList() {
                 key={card.getId()}
                 className={styles.card}
                 onDoubleClick={() => handleRemoveCard(card.getId())}
-                onClick={() => handleAddtoDeck(card)}
+                onClick={() => handleAddtoDeck(toCardDTO(card))}
               >
                 <h2>{card.getName()}</h2>
                 {card.getArt() ? <img src={card.getArt()} alt={card.getId()} /> : <p>No image available</p>}

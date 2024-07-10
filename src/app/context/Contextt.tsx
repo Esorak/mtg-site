@@ -11,7 +11,7 @@ interface CardContextType {
   removeCard: (id: string) => void;
   searchCard: (name: string) => void;
   fetchAllCards: () => void;
-  addCardToDeck: (id: string) => void;
+  addCardToDeck: (card: CardDTO) => void;
 }
 
 const CardContext = createContext<CardContextType | undefined>(undefined);
@@ -41,7 +41,6 @@ export function CardProvider({ children }: { children: ReactNode }) {
         const data = await response.json();
         const cardInstances = data.map((cardDTO: any) => new Card(cardDTO));
         setCards(cardInstances);
-        console.log(cardInstances);
       } else {
         console.error("Failed to fetch cards from backend");
       }
@@ -107,7 +106,6 @@ export function CardProvider({ children }: { children: ReactNode }) {
       });
       if (response.ok) {
         setCards((prevCards) => prevCards.filter((card) => card.getId() !== id));
-        console.log("Card deleted");
       } else {
         console.error("Failed to delete card");
       }
@@ -121,14 +119,14 @@ export function CardProvider({ children }: { children: ReactNode }) {
   
   */
 
-  const addCardToDeck = async (id: string) => {
+  const addCardToDeck = async (card: CardDTO) => {
     try {
       const response = await fetch(`/api/deck`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id }),
+        body: JSON.stringify(card),
       });
       if (response.ok) {
         console.log("Card added to deck");

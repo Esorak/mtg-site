@@ -14,7 +14,6 @@ function SearchPage() {
 
   useEffect(() => {
     if (cards.length === 0) return;
-    console.log(cards);
   }, [cards]);
 
   const handleSearch = () => {
