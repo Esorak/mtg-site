@@ -11,7 +11,6 @@ export function translateCardNetToCard(cardNetDTO: CardNetDTO): Card {
     power: cardNetDTO.power ? parseInt(cardNetDTO.power) : undefined,
     defense: cardNetDTO.toughness ? parseInt(cardNetDTO.toughness) : undefined,
     art: cardNetDTO.image_uris ? cardNetDTO.image_uris.normal : "",
-    description: cardNetDTO.oracle_text,
     rarity: cardNetDTO.rarity,
     setsName: cardNetDTO.sets_name,
     collectorNumber: cardNetDTO.collector_number,

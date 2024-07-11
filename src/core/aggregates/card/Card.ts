@@ -6,19 +6,18 @@ export default class Card {
   private subtype: string;
   private type: string;
   private cost: number;
-  private power: number | undefined;
-  private defense: number | undefined;
+  private power: number | undefined | null;
+  private defense: number | undefined | null;
   private art: string;
-  private description: string | undefined;
   private rarity: string;
-  private setsName: string;
+  private setsName: string | null | undefined;
   private collectorNumber: string;
-  private flavorText: string | undefined;
+  private flavorText: string | undefined | null;
   private artist: string;
   private color: string[];
   private manaCost: string;
   private loyalty?: number | null | undefined;
-  private keywords: string[] | undefined;
+  private keywords: string[] | undefined | null;
   private expansion: string;
 
   public constructor(cardDTO: CardDTO) {
@@ -30,7 +29,6 @@ export default class Card {
     this.power = cardDTO.power;
     this.defense = cardDTO.defense;
     this.art = cardDTO.art;
-    this.description = cardDTO.description;
     this.rarity = cardDTO.rarity;
     this.setsName = cardDTO.setsName;
     this.collectorNumber = cardDTO.collectorNumber;
@@ -85,19 +83,19 @@ export default class Card {
     this.cost = cost;
   }
 
-  public getPower(): number | undefined {
+  public getPower(): number | undefined | null {
     return this.power;
   }
 
-  public setPower(power: number | undefined): void {
+  public setPower(power: number | undefined | null): void {
     this.power = power;
   }
 
-  public getDefense(): number | undefined {
+  public getDefense(): number | undefined | null {
     return this.defense;
   }
 
-  public setDefense(defense: number | undefined): void {
+  public setDefense(defense: number | undefined | null): void {
     this.defense = defense;
   }
 
@@ -109,14 +107,6 @@ export default class Card {
     this.art = art;
   }
 
-  public getDescription(): string | undefined {
-    return this.description;
-  }
-
-  public setDescription(description: string | undefined): void {
-    this.description = description;
-  }
-
   public getRarity(): string {
     return this.rarity;
   }
@@ -125,11 +115,11 @@ export default class Card {
     this.rarity = rarity;
   }
 
-  public getSetsName(): string {
+  public getSetsName(): string | undefined | null {
     return this.setsName;
   }
 
-  public setSetsName(setsName: string): void {
+  public setSetsName(setsName: string | undefined | null): void {
     this.setsName = setsName;
   }
 
@@ -141,11 +131,11 @@ export default class Card {
     this.collectorNumber = collectorNumber;
   }
 
-  public getFlavorText(): string | undefined {
+  public getFlavorText(): string | undefined | null {
     return this.flavorText;
   }
 
-  public setFlavorText(flavorText: string | undefined): void {
+  public setFlavorText(flavorText: string | undefined | null): void {
     this.flavorText = flavorText;
   }
 
@@ -181,7 +171,7 @@ export default class Card {
     this.loyalty = loyalty;
   }
 
-  public getKeywords(): string[] | undefined {
+  public getKeywords(): string[] | undefined | null {
     return this.keywords;
   }
 

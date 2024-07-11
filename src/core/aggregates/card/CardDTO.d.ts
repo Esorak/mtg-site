@@ -7,11 +7,10 @@ export interface CardDTO {
   power?: number;
   defense?: number;
   art: string;
-  description: string | undefined;
   rarity: string;
-  setsName: string;
+  setsName: string | null | undefined;
   collectorNumber: string;
-  flavorText: string | undefined;
+  flavorText: string | null | undefined;
   artist: string;
   color: string[];
   manaCost: string;
@@ -30,13 +29,13 @@ export interface CardNetDTO {
   image_uris: { normal: string };
   oracle_text: string;
   rarity: string;
-  sets_name: string;
+  sets_name: string | null | undefined;
   collector_number: string;
-  flavor_text: string;
+  flavor_text: string | null | undefined;
   artist: string;
   colors: string[];
   mana_cost: string;
   keywords: string[];
   set: string;
-  loyalty?: string;
+  loyalty?: string | null | undefined;
 }

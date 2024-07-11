@@ -9,11 +9,10 @@ export default class Card {
   private power: number | undefined;
   private defense: number | undefined;
   private art: string;
-  private description: string | undefined;
   private rarity: string;
-  private setsName: string;
+  private setsName: string | null | undefined;
   private collectorNumber: string;
-  private flavorText: string | undefined;
+  private flavorText: string | undefined | null;
   private artist: string;
   private color: string[];
   private manaCost: string;
@@ -30,7 +29,6 @@ export default class Card {
     this.power = cardDTO.power;
     this.defense = cardDTO.defense;
     this.art = cardDTO.art;
-    this.description = cardDTO.description;
     this.rarity = cardDTO.rarity;
     this.setsName = cardDTO.setsName;
     this.collectorNumber = cardDTO.collectorNumber;
@@ -109,14 +107,6 @@ export default class Card {
     this.art = art;
   }
 
-  public getDescription(): string | undefined {
-    return this.description;
-  }
-
-  public setDescription(description: string | undefined): void {
-    this.description = description;
-  }
-
   public getRarity(): string {
     return this.rarity;
   }
@@ -125,11 +115,11 @@ export default class Card {
     this.rarity = rarity;
   }
 
-  public getSetsName(): string {
+  public getSetsName(): string | null | undefined {
     return this.setsName;
   }
 
-  public setSetsName(setsName: string): void {
+  public setSetsName(setsName: string | null | undefined): void {
     this.setsName = setsName;
   }
 

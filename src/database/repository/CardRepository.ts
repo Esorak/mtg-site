@@ -23,18 +23,18 @@ export default class CardRepository {
     cardEntity.type = type;
     cardEntity.subtype = subtype;
     cardEntity.cost = card.getCost();
-    cardEntity.power = card.getPower();
-    cardEntity.defense = card.getDefense();
+    cardEntity.power = card.getPower() ?? 0;
+    cardEntity.defense = card.getDefense() ?? 0;
     cardEntity.art = card.getArt();
     cardEntity.color = card.getColor();
     cardEntity.rarity = card.getRarity();
     cardEntity.setsName = card.getSetsName();
     cardEntity.collectorNumber = card.getCollectorNumber();
-    cardEntity.flavorText = card.getFlavorText();
+    cardEntity.flavorText = card.getFlavorText() ?? "";
     cardEntity.artist = card.getArtist();
     cardEntity.manaCost = card.getManaCost();
     cardEntity.loyalty = card.getLoyalty();
-    cardEntity.keywords = card.getKeywords();
+    cardEntity.keywords = card.getKeywords() ?? [];
     cardEntity.expansion = card.getExpansion();
 
     await this.repository.save(cardEntity);

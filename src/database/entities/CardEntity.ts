@@ -8,9 +8,6 @@ export class CardEntity {
   @Column({ type: "varchar", nullable: false })
   name!: string;
 
-  @Column({ type: "text", nullable: true })
-  description!: string | undefined;
-
   @Column({ type: "varchar", nullable: false, array: true })
   color!: string[];
 
@@ -33,7 +30,7 @@ export class CardEntity {
   rarity!: string;
 
   @Column({ type: "varchar", nullable: true })
-  setsName!: string;
+  setsName!: string | null | undefined;
 
   @Column({ type: "varchar", nullable: false })
   collectorNumber!: string;

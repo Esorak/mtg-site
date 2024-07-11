@@ -12,6 +12,7 @@ interface CardContextType {
   searchCard: (name: string) => void;
   fetchAllCards: () => void;
   addCardToDeck: (card: CardDTO) => void;
+  createDeck: (name: string) => void;
 }
 
 const CardContext = createContext<CardContextType | undefined>(undefined);
@@ -119,27 +120,48 @@ export function CardProvider({ children }: { children: ReactNode }) {
   
   */
 
-  const addCardToDeck = async (card: CardDTO) => {
+  const createDeck = async (name: string) => {
     try {
       const response = await fetch(`/api/deck`, {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(card),
+        body: JSON.stringify({ name }),
       });
       if (response.ok) {
-        console.log("Card added to deck");
+        console.log("Deck created");
       } else {
-        console.error("Failed to add card to deck");
+        console.error("Failed to create deck");
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
+  const addCardToDeck = async (card: CardDTO) => {
+    try {
+      const response = await fetch(`/api/deck`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ deckId: "deck123", card }),
+      });
+      if (response.ok) {
+        console.log("Card added to deck");
+      } else {
+        console.error("Failed to add card to deck");
+      }
+
+      console.log("deck123", card);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
-    <CardContext.Provider value={{ cards, addCard, removeCard, searchCard, fetchAllCards, addCardToDeck }}>
+    <CardContext.Provider value={{ cards, addCard, removeCard, searchCard, fetchAllCards, addCardToDeck, createDeck }}>
       {children}
     </CardContext.Provider>
   );

@@ -13,7 +13,6 @@ export default function toCardDTO(cardFromNet: CardFromNet): CardDTO {
     power: cardFromNet.getPower(),
     defense: cardFromNet.getDefense(),
     art: cardFromNet.getArt(),
-    description: cardFromNet.getDescription(),
     rarity: cardFromNet.getRarity(),
     setsName: cardFromNet.getSetsName(),
     collectorNumber: cardFromNet.getCollectorNumber(),

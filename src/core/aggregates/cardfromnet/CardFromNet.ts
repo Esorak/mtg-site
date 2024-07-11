@@ -9,11 +9,10 @@ export default class CardFromNet {
   private power: number | undefined;
   private defense: number | undefined;
   private art: string;
-  private description: string | undefined;
   private rarity: string;
   private setsName: string;
   private collectorNumber: string;
-  private flavorText: string | undefined;
+  private flavorText: string | undefined | null;
   private artist: string;
   private color: string[];
   private manaCost: string;
@@ -30,11 +29,10 @@ export default class CardFromNet {
     this.power = cardNetDTO.power ? parseInt(cardNetDTO.power) : undefined;
     this.defense = cardNetDTO.toughness ? parseInt(cardNetDTO.toughness) : undefined;
     this.art = cardNetDTO.image_uris ? cardNetDTO.image_uris.normal : "";
-    this.description = cardNetDTO.oracle_text;
     this.rarity = cardNetDTO.rarity;
     this.setsName = cardNetDTO.sets_name;
     this.collectorNumber = cardNetDTO.collector_number;
-    this.flavorText = cardNetDTO.flavor_text;
+    this.flavorText = cardNetDTO.flavor_text ? parseInt(cardNetDTO.flavor_text) : undefined;
     this.artist = cardNetDTO.artist;
     this.color = cardNetDTO.colors;
     this.manaCost = cardNetDTO.mana_cost;
@@ -106,15 +104,6 @@ export default class CardFromNet {
   public setArt(art: string): void {
     this.art = art;
   }
-
-  public getDescription(): string | undefined {
-    return this.description;
-  }
-
-  public setDescription(description: string | undefined): void {
-    this.description = description;
-  }
-
   public getRarity(): string {
     return this.rarity;
   }

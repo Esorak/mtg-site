@@ -15,10 +15,9 @@ export default function Home() {
 }
 
 function CardList() {
-  const { fetchAllCards, cards } = useCard();
+  const { fetchAllCards, cards, addCardToDeck } = useCard();
   const [loading, setLoading] = useState(true);
   const { removeCard } = useCard();
-  const { addCardToDeck } = useCard();
 
   const fetchCards = async () => {
     setLoading(true);

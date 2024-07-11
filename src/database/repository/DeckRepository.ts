@@ -54,4 +54,9 @@ export default class DeckRepository {
   async deleteDeck(id: string): Promise<void> {
     await this.repository.delete(id);
   }
+
+  async createDeck(name: string): Promise<void> {
+    const deck = new Deck("", name);
+    await this.saveDeck(deck);
+  }
 }

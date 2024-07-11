@@ -12,7 +12,6 @@ export function ToCardDTO(card: Card): CardDTO {
     power: card.getPower(),
     defense: card.getDefense(),
     art: card.getArt(),
-    description: card.getDescription(),
     rarity: card.getRarity(),
     setsName: card.getSetsName(),
     collectorNumber: card.getCollectorNumber(),

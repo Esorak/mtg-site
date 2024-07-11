@@ -1,6 +1,4 @@
-import Card from "@/core/aggregates/card/Card";
-import type { CardDTO } from "@/core/aggregates/card/CardDTO";
-import Deck from "@/core/aggregates/deck/Deck";
+import { toCard } from "@/core/converter/ToCard";
 import Connection from "@/database/Connection";
 import DeckRepository from "@/database/repository/DeckRepository";
 
@@ -45,11 +43,41 @@ export async function GET(): Promise<Response> {
 //   }
 // }
 
-//card schema
+// Schéma de validation pour la création de deck
+const postSchema = z.object({
+  id: z.string().min(1, "Id cannot be empty"),
+  name: z.string().min(1, "Name cannot be empty"),
+});
+
+// POST pour créer un nouveau deck
+export async function POST(req: Request): Promise<Response> {
+  let name;
+
+  try {
+    const requestData = await req.json();
+    const data = postSchema.parse(requestData);
+    name = data.name;
+  } catch (e) {
+    console.error("Invalid data:", e);
+    return new Response(JSON.stringify({ error: "invalid data" }), { status: 400 });
+  }
+
+  const connection = await Connection.getInstance();
+  const repo = new DeckRepository(connection);
+
+  try {
+    await repo.createDeck(name);
+    return new Response("ok");
+  } catch (e) {
+    console.error("Error creating deck:", e);
+    return new Response(JSON.stringify({ error: "failed to create deck" }), { status: 500 });
+  }
+}
+
+// Schéma de validation pour les cartes
 const CardSchema = z.object({
   id: z.string().min(1, "Id cannot be empty"),
   name: z.string().min(1, "Name cannot be empty"),
-  description: z.string().optional(),
   color: z.array(z.string()),
   type: z.string().min(1, "Type cannot be empty"),
   subtype: z.string().min(1, "Subtype cannot be empty"),
@@ -68,36 +96,35 @@ const CardSchema = z.object({
   power: z.number().optional(),
 });
 
-// POST a new deck
-const postSchema = z.object({
-  id: z.string().min(1, "Id cannot be empty"),
-  name: z.string().min(1, "Name cannot be empty"),
-  card: z.array(CardSchema),
+// Schéma de validation pour ajouter une carte à un deck
+const addCardToDeckSchema = z.object({
+  deckId: z.string().min(1, "Deck ID cannot be empty"),
+  card: CardSchema,
 });
 
-export async function POST(req: Request): Promise<Response> {
-  let data;
+// PUT pour ajouter une carte à un deck existant
+export async function PUT(req: Request): Promise<Response> {
+  let deckId;
+  let card;
+
   try {
-    data = await req.json();
-    postSchema.parse(data); // Validation des données
+    const requestData = await req.json();
+    const data = addCardToDeckSchema.parse(requestData);
+    deckId = data.deckId;
+    card = data.card;
   } catch (e) {
-    console.error("Invalid data:", e); // Log de l'erreur
+    console.error("Invalid data:", e);
     return new Response(JSON.stringify({ error: "invalid data" }), { status: 400 });
   }
 
-  const newDeck: Deck = new Deck(
-    data.id,
-    data.name,
-    data.card.map((card: CardDTO) => new Card(card)),
-  );
-
   const connection = await Connection.getInstance();
   const repo = new DeckRepository(connection);
+
   try {
-    await repo.saveDeck(newDeck);
-    return new Response(JSON.stringify(newDeck));
+    await repo.AddCardToDeck(deckId, toCard(card));
+    return new Response("ok");
   } catch (e) {
-    console.error("Error saving card to database:", e); // Log de l'erreur d'enregistrement
-    return new Response(JSON.stringify({ error: "failed to save deck" }), { status: 500 });
+    console.error("Error adding card to deck:", e);
+    return new Response(JSON.stringify({ error: "failed to add card to deck" }), { status: 500 });
   }
 }

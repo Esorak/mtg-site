@@ -46,7 +46,6 @@ export async function DELETE(req: Request): Promise<Response> {
 const postSchema = z.object({
   id: z.string().min(1, "Id cannot be empty"),
   name: z.string().min(1, "Name cannot be empty"),
-  description: z.string().optional(),
   color: z.array(z.string()),
   type: z.string().min(1, "Type cannot be empty"),
   subtype: z.string().min(1, "Subtype cannot be empty"),

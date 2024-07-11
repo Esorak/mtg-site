@@ -6,7 +6,6 @@ export function toCardEntity(card: Card): CardEntity {
   return new CardEntity({
     id: card.getId(),
     name: card.getName(),
-    description: card.getDescription(),
     color: card.getColor(),
     type: card.getType(),
     subtype: card.getSubtype(),

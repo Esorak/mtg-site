@@ -6,7 +6,6 @@ export function toCard(cardEntity: CardEntity): Card {
   return new Card({
     id: cardEntity.id,
     name: cardEntity.name,
-    description: cardEntity.description,
     color: cardEntity.color,
     type: cardEntity.type,
     subtype: cardEntity.subtype,
@@ -14,7 +13,7 @@ export function toCard(cardEntity: CardEntity): Card {
     defense: cardEntity.defense,
     art: cardEntity.art,
     rarity: cardEntity.rarity,
-    setsName: cardEntity.setsName,
+    setsName: cardEntity.setsName || "",
     collectorNumber: cardEntity.collectorNumber,
     flavorText: cardEntity.flavorText,
     artist: cardEntity.artist,
