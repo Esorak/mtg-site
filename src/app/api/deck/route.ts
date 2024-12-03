@@ -1,4 +1,5 @@
-import { toCard } from "@/core/converter/ToCard";
+import type { CardDTO } from "@/core/aggregates/card/CardDTO";
+import cardDTOtoCard from "@/core/converter/cardDTOToCard";
 import Connection from "@/database/Connection";
 import DeckRepository from "@/database/repository/DeckRepository";
 
@@ -82,18 +83,18 @@ const CardSchema = z.object({
   type: z.string().min(1, "Type cannot be empty"),
   subtype: z.string().min(1, "Subtype cannot be empty"),
   cost: z.number().min(0, "Cost cannot be negative"),
-  defense: z.number().optional(),
+  defense: z.number().nullable(),
   art: z.string().min(1, "Art cannot be empty"),
   rarity: z.string().min(1, "Rarity cannot be empty"),
-  setsName: z.string().optional(),
+  setsName: z.string().nullable(),
   collectorNumber: z.string().min(1, "CollectorNumber cannot be empty"),
-  flavorText: z.string().optional(),
+  flavorText: z.string().nullable(),
   artist: z.string().min(1, "Artist cannot be empty"),
   manaCost: z.string().min(1, "ManaCost cannot be empty"),
-  loyalty: z.number().optional(),
-  keywords: z.array(z.string()).optional(),
+  loyalty: z.number().nullable(),
+  keywords: z.array(z.string()).nullable(),
   expansion: z.string().min(1, "Expansion cannot be empty"),
-  power: z.number().optional(),
+  power: z.number().nullable(),
 });
 
 // Schéma de validation pour ajouter une carte à un deck
@@ -105,13 +106,13 @@ const addCardToDeckSchema = z.object({
 // PUT pour ajouter une carte à un deck existant
 export async function PUT(req: Request): Promise<Response> {
   let deckId;
-  let card;
+  let card: CardDTO;
 
   try {
     const requestData = await req.json();
     const data = addCardToDeckSchema.parse(requestData);
     deckId = data.deckId;
-    card = data.card;
+    card = data.card as CardDTO;
   } catch (e) {
     console.error("Invalid data:", e);
     return new Response(JSON.stringify({ error: "invalid data" }), { status: 400 });
@@ -121,7 +122,7 @@ export async function PUT(req: Request): Promise<Response> {
   const repo = new DeckRepository(connection);
 
   try {
-    await repo.AddCardToDeck(deckId, toCard(card));
+    await repo.AddCardToDeck(deckId, cardDTOtoCard(card));
     return new Response("ok");
   } catch (e) {
     console.error("Error adding card to deck:", e);

@@ -1,5 +1,5 @@
 import Card from "@/core/aggregates/card/Card";
-import { toCard } from "@/core/converter/ToCard";
+import { cardEntityToCard } from "@/core/converter/ToCard";
 import { Repository } from "typeorm";
 import Connection from "../Connection";
 import { CardEntity } from "../entities/CardEntity";
@@ -42,7 +42,7 @@ export default class CardRepository {
 
   async getAllCards(): Promise<Card[]> {
     const cardEntities = await this.repository.find();
-    return cardEntities.map((cardEntity) => toCard(cardEntity));
+    return cardEntities.map((cardEntity) => cardEntityToCard(cardEntity));
   }
 
   async deleteCard(id: string): Promise<void> {

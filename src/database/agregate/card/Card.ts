@@ -6,8 +6,8 @@ export default class Card {
   private subtype: string;
   private type: string;
   private cost: number;
-  private power: number | undefined;
-  private defense: number | undefined;
+  private power: number | undefined | null;
+  private defense: number | undefined | null;
   private art: string;
   private rarity: string;
   private setsName: string | null | undefined;
@@ -17,7 +17,7 @@ export default class Card {
   private color: string[];
   private manaCost: string;
   private loyalty?: number | null | undefined;
-  private keywords: string[] | undefined;
+  private keywords: string[] | undefined | null;
   private expansion: string;
 
   public constructor(cardDTO: CardDTO) {
@@ -83,19 +83,19 @@ export default class Card {
     this.cost = cost;
   }
 
-  public getPower(): number | undefined {
+  public getPower(): number | undefined | null {
     return this.power;
   }
 
-  public setPower(power: number | undefined): void {
+  public setPower(power: number | undefined | null): void {
     this.power = power;
   }
 
-  public getDefense(): number | undefined {
+  public getDefense(): number | undefined | null {
     return this.defense;
   }
 
-  public setDefense(defense: number | undefined): void {
+  public setDefense(defense: number | undefined | null): void {
     this.defense = defense;
   }
 
@@ -131,11 +131,11 @@ export default class Card {
     this.collectorNumber = collectorNumber;
   }
 
-  public getFlavorText(): string | undefined {
+  public getFlavorText(): string | undefined | null {
     return this.flavorText;
   }
 
-  public setFlavorText(flavorText: string): void {
+  public setFlavorText(flavorText: string | undefined | null): void {
     this.flavorText = flavorText;
   }
 
@@ -171,11 +171,11 @@ export default class Card {
     this.loyalty = loyalty;
   }
 
-  public getKeywords(): string[] | undefined {
+  public getKeywords(): string[] | undefined | null {
     return this.keywords;
   }
 
-  public setKeywords(keywords: string[]): void {
+  public setKeywords(keywords: string[] | undefined | null): void {
     this.keywords = keywords;
   }
 

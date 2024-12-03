@@ -6,11 +6,11 @@ export default class CardFromNet {
   private subtype: string | undefined;
   private type: string;
   private cost: number;
-  private power: number | undefined;
-  private defense: number | undefined;
+  private power: number | undefined | null;
+  private defense: number | undefined | null;
   private art: string;
   private rarity: string;
-  private setsName: string;
+  private setsName: string | undefined | null;
   private collectorNumber: string;
   private flavorText: string | undefined | null;
   private artist: string;
@@ -32,7 +32,7 @@ export default class CardFromNet {
     this.rarity = cardNetDTO.rarity;
     this.setsName = cardNetDTO.sets_name;
     this.collectorNumber = cardNetDTO.collector_number;
-    this.flavorText = cardNetDTO.flavor_text ? parseInt(cardNetDTO.flavor_text) : undefined;
+    this.flavorText = cardNetDTO.flavor_text ? cardNetDTO.flavor_text : undefined;
     this.artist = cardNetDTO.artist;
     this.color = cardNetDTO.colors;
     this.manaCost = cardNetDTO.mana_cost;
@@ -81,19 +81,19 @@ export default class CardFromNet {
     this.cost = cost;
   }
 
-  public getPower(): number | undefined {
+  public getPower(): number | undefined | null {
     return this.power;
   }
 
-  public setPower(power: number | undefined): void {
+  public setPower(power: number | undefined | null): void {
     this.power = power;
   }
 
-  public getDefense(): number | undefined {
+  public getDefense(): number | undefined | null {
     return this.defense;
   }
 
-  public setDefense(defense: number | undefined): void {
+  public setDefense(defense: number | undefined | null): void {
     this.defense = defense;
   }
 
@@ -112,7 +112,7 @@ export default class CardFromNet {
     this.rarity = rarity;
   }
 
-  public getSetsName(): string {
+  public getSetsName(): string | undefined | null {
     return this.setsName;
   }
 
@@ -128,7 +128,7 @@ export default class CardFromNet {
     this.collectorNumber = collectorNumber;
   }
 
-  public getFlavorText(): string | undefined {
+  public getFlavorText(): string | undefined | null {
     return this.flavorText;
   }
 

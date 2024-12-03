@@ -4,8 +4,8 @@ export interface CardDTO {
   subtype: string;
   type: string;
   cost: number;
-  power?: number;
-  defense?: number;
+  power?: number | null | undefined;
+  defense?: number | null | undefined;
   art: string;
   rarity: string;
   setsName: string | null | undefined;
@@ -15,7 +15,7 @@ export interface CardDTO {
   color: string[];
   manaCost: string;
   loyalty?: number | null | undefined;
-  keywords: string[] | undefined;
+  keywords: string[] | undefined | null;
   expansion: string;
 }
 export interface CardNetDTO {

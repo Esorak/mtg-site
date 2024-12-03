@@ -36,7 +36,7 @@ export class CardEntity {
   collectorNumber!: string;
 
   @Column({ type: "varchar", nullable: true })
-  flavorText?: string;
+  flavorText?: string | undefined | null;
 
   @Column({ type: "varchar", nullable: false })
   artist!: string;

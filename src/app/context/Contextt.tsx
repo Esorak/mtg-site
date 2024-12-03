@@ -123,7 +123,7 @@ export function CardProvider({ children }: { children: ReactNode }) {
   const createDeck = async (name: string) => {
     try {
       const response = await fetch(`/api/deck`, {
-        method: "PUT",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -153,7 +153,6 @@ export function CardProvider({ children }: { children: ReactNode }) {
       } else {
         console.error("Failed to add card to deck");
       }
-
       console.log("deck123", card);
     } catch (error) {
       console.error("Error:", error);
